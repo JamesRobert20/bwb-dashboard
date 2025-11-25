@@ -16,13 +16,6 @@ function ResultsContent() {
   const ticker = searchParams.get("ticker");
   const expiry = searchParams.get("expiry");
 
-  const [filters, setFilters] = useState({
-    minDTE: 0,
-    maxDTE: 365,
-    minCredit: 0,
-    minScore: 0,
-  });
-
   const scanRequest: ScanRequest | null = ticker
     ? { ticker, expiry: expiry || undefined }
     : null;
@@ -111,11 +104,14 @@ function ResultsContent() {
                     {data.results.length} results
                   </span>
                 </div>
-                <BWBTable strategies={data.results} filters={filters} />
+                <BWBTable strategies={data.results} />
               </div>
 
               <div className="mt-6 lg:mt-0">
-                <FiltersSidebar onFilterChange={setFilters} />
+                <FiltersSidebar
+                  ticker={ticker}
+                  expiry={expiry || undefined}
+                />
               </div>
             </div>
           </div>

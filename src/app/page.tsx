@@ -12,12 +12,6 @@ import { ScanRequest } from "@/types/bwb";
 
 export default function Home() {
   const [scanRequest, setScanRequest] = useState<ScanRequest | null>(null);
-  const [filters, setFilters] = useState({
-    minDTE: 0,
-    maxDTE: 365,
-    minCredit: 0,
-    minScore: 0,
-  });
 
   const { data, isLoading, error } = useBWBScan(scanRequest);
 
@@ -108,11 +102,14 @@ export default function Home() {
                     {data.results.length} results
                   </span>
                 </div>
-                <BWBTable strategies={data.results} filters={filters} />
+                <BWBTable strategies={data.results} />
               </div>
 
               <div className="mt-6 lg:mt-0">
-                <FiltersSidebar onFilterChange={setFilters} />
+                <FiltersSidebar
+                  ticker={scanRequest?.ticker || null}
+                  expiry={scanRequest?.expiry}
+                />
               </div>
             </div>
           </div>

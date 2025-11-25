@@ -1,22 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScanResponse, BWBStrategy } from "@/types/bwb";
 
 interface FiltersSidebarProps {
-  onFilterChange: (filters: {
-    minDTE: number;
-    maxDTE: number;
-    minCredit: number;
-    minScore: number;
-  }) => void;
+  ticker: string | null;
+  expiry?: string;
 }
 
-export function FiltersSidebar({ onFilterChange }: FiltersSidebarProps) {
+export function FiltersSidebar({ ticker, expiry }: FiltersSidebarProps) {
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const [filters, setFilters] = useState({
     minDTE: 0,
@@ -25,11 +24,40 @@ export function FiltersSidebar({ onFilterChange }: FiltersSidebarProps) {
     minScore: 0,
   });
 
+  const applyFilters = (newFilters: typeof filters) => {
+    if (!ticker) return;
+
+    const queryKey = ["bwb-scan", ticker, expiry];
+    
+    // Get the original unfiltered data
+    const cachedData = queryClient.getQueryData<ScanResponse>(queryKey);
+    
+    if (!cachedData) return;
+
+    // Get the original results from the cache or store them if first time
+    const originalResults = cachedData._originalResults || cachedData.results;
+    
+    // Filter the original results
+    const filtered = originalResults.filter((r: BWBStrategy) =>
+      r.dte >= newFilters.minDTE &&
+      r.dte <= newFilters.maxDTE &&
+      r.credit >= newFilters.minCredit &&
+      r.score >= newFilters.minScore
+    );
+
+    // Update the cache with filtered results, preserving original
+    queryClient.setQueryData<ScanResponse>(queryKey, {
+      ...cachedData,
+      results: filtered,
+      _originalResults: originalResults,
+    });
+  };
+
   const handleFilterChange = (key: string, value: string) => {
     const numValue = parseFloat(value) || 0;
     const newFilters = { ...filters, [key]: numValue };
     setFilters(newFilters);
-    onFilterChange(newFilters);
+    applyFilters(newFilters);
   };
 
   const resetFilters = () => {
@@ -40,7 +68,7 @@ export function FiltersSidebar({ onFilterChange }: FiltersSidebarProps) {
       minScore: 0,
     };
     setFilters(defaultFilters);
-    onFilterChange(defaultFilters);
+    applyFilters(defaultFilters);
   };
 
   return (

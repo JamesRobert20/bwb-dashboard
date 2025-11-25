@@ -23,6 +23,7 @@ export interface ScanSummary {
 export interface ScanResponse {
   results: BWBStrategy[];
   summary: ScanSummary;
+  _originalResults?: BWBStrategy[];
 }
 
 export interface ScanRequest {

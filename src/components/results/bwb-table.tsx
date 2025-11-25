@@ -10,12 +10,6 @@ import { PayoffChart } from "./payoff-chart";
 
 interface BWBTableProps {
   strategies: BWBStrategy[];
-  filters?: {
-    minDTE?: number;
-    maxDTE?: number;
-    minCredit?: number;
-    minScore?: number;
-  };
 }
 
 type SortField = "score" | "credit" | "max_profit" | "max_loss" | "dte";
@@ -39,40 +33,24 @@ function SortButton({ field, children, onClick }: SortButtonProps) {
   );
 }
 
-export function BWBTable({ strategies, filters }: BWBTableProps) {
+export function BWBTable({ strategies }: BWBTableProps) {
   const [sortField, setSortField] = useState<SortField>("score");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [selectedStrategy, setSelectedStrategy] = useState<BWBStrategy | null>(null);
 
-  const filteredAndSortedStrategies = useMemo(() => {
-    let filtered = [...strategies];
-
-    // Apply filters
-    if (filters) {
-      if (filters.minDTE !== undefined) {
-        filtered = filtered.filter((s) => s.dte >= filters.minDTE!);
-      }
-      if (filters.maxDTE !== undefined) {
-        filtered = filtered.filter((s) => s.dte <= filters.maxDTE!);
-      }
-      if (filters.minCredit !== undefined) {
-        filtered = filtered.filter((s) => s.credit >= filters.minCredit!);
-      }
-      if (filters.minScore !== undefined) {
-        filtered = filtered.filter((s) => s.score >= filters.minScore!);
-      }
-    }
+  const sortedStrategies = useMemo(() => {
+    const sorted = [...strategies];
 
     // Apply sorting
-    filtered.sort((a, b) => {
+    sorted.sort((a, b) => {
       const aVal = a[sortField];
       const bVal = b[sortField];
       const multiplier = sortDirection === "asc" ? 1 : -1;
       return (aVal - bVal) * multiplier;
     });
 
-    return filtered;
-  }, [strategies, filters, sortField, sortDirection]);
+    return sorted;
+  }, [strategies, sortField, sortDirection]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -83,7 +61,7 @@ export function BWBTable({ strategies, filters }: BWBTableProps) {
     }
   };
 
-  if (filteredAndSortedStrategies.length === 0) {
+  if (sortedStrategies.length === 0) {
     return (
       <div className="text-center py-12 text-zinc-400">
         No strategies found matching your criteria.
@@ -120,7 +98,7 @@ export function BWBTable({ strategies, filters }: BWBTableProps) {
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-800">
-              {filteredAndSortedStrategies.map((strategy, idx) => (
+              {sortedStrategies.map((strategy, idx) => (
                 <tr
                   key={idx}
                   className="hover:bg-zinc-900/30 transition-colors cursor-pointer"
@@ -177,7 +155,7 @@ export function BWBTable({ strategies, filters }: BWBTableProps) {
 
         {/* Mobile Cards */}
         <div className="md:hidden divide-y divide-zinc-800">
-          {filteredAndSortedStrategies.map((strategy, idx) => (
+          {sortedStrategies.map((strategy, idx) => (
             <div
               key={idx}
               className="p-4 hover:bg-zinc-900/30 transition-colors cursor-pointer"

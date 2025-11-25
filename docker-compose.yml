@@ -21,14 +21,14 @@ services:
   # Python FastAPI Backend
   backend:
     build:
-      context: ../python-engine
+      context: ../bwb_scanner
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
       - PYTHONUNBUFFERED=1
     volumes:
-      - ../python-engine:/app
+      - ../bwb_scanner:/app
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 networks:
