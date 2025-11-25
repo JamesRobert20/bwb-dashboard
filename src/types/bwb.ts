@@ -1,4 +1,6 @@
 export type BWBStrategy = {
+  ticker: string;
+  expiry: string;
   k1: number;
   k2: number;
   k3: number;
@@ -16,14 +18,15 @@ export type ScanSummary = {
   avg_score: number;
   best_score: number;
   avg_credit: number;
-  avg_max_profit: number;
-  scan_time_ms: number;
+  avg_max_profit?: number;
+  scan_time_ms?: number;
 }
 
 export type ScanResponse = {
   results: BWBStrategy[];
   summary: ScanSummary;
   _originalResults?: BWBStrategy[];
+  _originalSummary?: ScanSummary;
 }
 
 export type ScanRequest = {

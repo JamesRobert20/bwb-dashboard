@@ -77,6 +77,7 @@ export function BWBTable({ strategies }: BWBTableProps) {
           <table className="w-full">
             <thead className="bg-zinc-900/50 border-b border-zinc-800">
               <tr className="text-left text-sm text-zinc-400">
+                <th className="px-4 py-3 font-medium">Expiry</th>
                 <th className="px-4 py-3 font-medium">Strikes</th>
                 <th className="px-4 py-3 font-medium">Wings</th>
                 <th className="px-4 py-3 font-medium">
@@ -104,6 +105,9 @@ export function BWBTable({ strategies }: BWBTableProps) {
                   className="hover:bg-zinc-900/30 transition-colors cursor-pointer"
                   onClick={() => setSelectedStrategy(strategy)}
                 >
+                  <td className="px-4 py-3 font-mono text-sm text-zinc-400">
+                    {strategy.expiry}
+                  </td>
                   <td className="px-4 py-3 font-mono text-sm text-zinc-100">
                     {strategy.k1}/{strategy.k2}/{strategy.k3}
                   </td>
@@ -117,7 +121,7 @@ export function BWBTable({ strategies }: BWBTableProps) {
                     {formatCurrency(strategy.max_profit)}
                   </td>
                   <td className="px-4 py-3 font-mono text-sm text-red-500">
-                    {formatCurrency(strategy.max_loss)}
+                    -{formatCurrency(strategy.max_loss)}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
@@ -171,11 +175,19 @@ export function BWBTable({ strategies }: BWBTableProps) {
                 <div className="text-right">
                   <p className="text-xs text-zinc-400 mb-1">Score</p>
                   <p className="font-mono text-sm text-zinc-100">
-                    {formatNumber(strategy.score, 0)}
+                    {formatNumber(strategy.score, 1)}%
                   </p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
+                <div>
+                  <p className="text-xs text-zinc-400">Expiry</p>
+                  <p className="font-mono text-zinc-400">{strategy.expiry}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-zinc-400">DTE</p>
+                  <p className="font-mono text-zinc-100">{strategy.dte}d</p>
+                </div>
                 <div>
                   <p className="text-xs text-zinc-400">Credit</p>
                   <p className="font-mono text-emerald-500">
@@ -191,12 +203,12 @@ export function BWBTable({ strategies }: BWBTableProps) {
                 <div>
                   <p className="text-xs text-zinc-400">Max Loss</p>
                   <p className="font-mono text-red-500">
-                    {formatCurrency(strategy.max_loss)}
+                    -{formatCurrency(strategy.max_loss)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-zinc-400">DTE</p>
-                  <p className="font-mono text-zinc-100">{strategy.dte}d</p>
+                  <p className="text-xs text-zinc-400">Wings</p>
+                  <p className="font-mono text-zinc-100">{strategy.wing_left}/{strategy.wing_right}</p>
                 </div>
               </div>
             </div>

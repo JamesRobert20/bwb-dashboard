@@ -28,16 +28,13 @@ export function FiltersSidebar({ ticker, expiry }: FiltersSidebarProps) {
     if (!ticker) return;
 
     const queryKey = ["bwb-scan", ticker, expiry];
-    
-    // Get the original unfiltered data
     const cachedData = queryClient.getQueryData<ScanResponse>(queryKey);
     
     if (!cachedData) return;
 
-    // Get the original results from the cache or store them if first time
     const originalResults = cachedData._originalResults || cachedData.results;
+    const originalSummary = cachedData._originalSummary || cachedData.summary;
     
-    // Filter the original results
     const filtered = originalResults.filter((r: BWBStrategy) =>
       r.dte >= newFilters.minDTE &&
       r.dte <= newFilters.maxDTE &&
@@ -45,11 +42,30 @@ export function FiltersSidebar({ ticker, expiry }: FiltersSidebarProps) {
       r.score >= newFilters.minScore
     );
 
-    // Update the cache with filtered results, preserving original
+    const newSummary = filtered.length > 0
+      ? {
+          total_found: filtered.length,
+          avg_score: filtered.reduce((sum, r) => sum + r.score, 0) / filtered.length,
+          best_score: Math.max(...filtered.map((r) => r.score)),
+          avg_credit: filtered.reduce((sum, r) => sum + r.credit, 0) / filtered.length,
+          avg_max_profit: filtered.reduce((sum, r) => sum + r.max_profit, 0) / filtered.length,
+          scan_time_ms: originalSummary.scan_time_ms,
+        }
+      : {
+          total_found: 0,
+          avg_score: 0,
+          best_score: 0,
+          avg_credit: 0,
+          avg_max_profit: 0,
+          scan_time_ms: originalSummary.scan_time_ms,
+        };
+
     queryClient.setQueryData<ScanResponse>(queryKey, {
       ...cachedData,
       results: filtered,
+      summary: newSummary,
       _originalResults: originalResults,
+      _originalSummary: originalSummary,
     });
   };
 

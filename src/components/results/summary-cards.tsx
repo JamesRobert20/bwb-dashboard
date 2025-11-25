@@ -31,7 +31,7 @@ export function SummaryCards({ summary }: SummaryCardsProps) {
     },
     {
       title: "Scan Time",
-      value: `${summary.scan_time_ms}ms`,
+      value: `${summary.scan_time_ms ?? 0}ms`,
       icon: Clock,
       color: "text-purple-500",
     },
