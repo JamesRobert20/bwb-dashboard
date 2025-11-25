@@ -35,7 +35,6 @@ A professional, real-time options trading dashboard for discovering and analyzin
 ### Prerequisites
 - Node.js 20+
 - Yarn (recommended) or npm
-- Docker (optional for full stack)
 
 ### One-Command Setup
 
@@ -56,19 +55,7 @@ yarn dev
 
 The dashboard will be available at [http://localhost:3000](http://localhost:3000)
 
-### With Docker Compose (Full Stack)
-
-```bash
-# Start both frontend and backend
-docker-compose up
-
-# Or in detached mode
-docker-compose up -d
-```
-
-This will start:
-- Frontend at [http://localhost:3000](http://localhost:3000)
-- Backend API at [http://localhost:8000](http://localhost:8000)
+**Note:** Make sure your backend API is running and accessible. Update `NEXT_PUBLIC_API_URL` in `.env.local` to point to your backend URL.
 
 ## 📁 Project Structure
 
@@ -107,8 +94,6 @@ bwb-dashboard/
 │   └── types/
 │       └── bwb.ts            # TypeScript type definitions
 ├── public/                    # Static assets
-├── docker-compose.yml         # Docker orchestration
-├── Dockerfile                 # Frontend container
 └── README.md
 ```
 
@@ -199,10 +184,9 @@ yarn build        # Build for production
 yarn start        # Start production server
 yarn lint         # Run ESLint
 
-# Docker
-docker-compose up              # Start all services
-docker-compose down            # Stop all services
-docker-compose logs -f         # View logs
+# Production
+yarn build                     # Build for production
+yarn start                     # Start production server
 ```
 
 ### Environment Variables
@@ -243,23 +227,39 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 
 ### Vercel (Recommended)
 
+The easiest way to deploy is using Vercel:
+
+#### Option 1: Deploy via Vercel Dashboard
+
+1. Push your code to GitHub/GitLab/Bitbucket
+2. Go to [vercel.com](https://vercel.com) and sign in
+3. Click "New Project" and import your repository
+4. Vercel will auto-detect Next.js and configure everything
+5. Add environment variable: `NEXT_PUBLIC_API_URL` pointing to your backend API
+6. Click "Deploy"
+
+#### Option 2: Deploy via Vercel CLI
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
 
-# Deploy
+# Login to Vercel
+vercel login
+
+# Deploy (first time)
 vercel
+
+# Deploy to production
+vercel --prod
 ```
 
-### Docker Production
+#### Environment Variables
 
-```bash
-# Build production image
-docker build -t bwb-dashboard .
+Set these in your Vercel project settings:
+- `NEXT_PUBLIC_API_URL` - Your backend API URL (e.g., `https://your-api.vercel.app`)
 
-# Run container
-docker run -p 3000:3000 -e NEXT_PUBLIC_API_URL=https://api.example.com bwb-dashboard
-```
+The `vercel.json` file is already configured for optimal Next.js deployment.
 
 ## 🤝 Contributing
 
