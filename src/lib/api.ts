@@ -43,7 +43,7 @@ export async function scanBWB(request: ScanRequest): Promise<ScanResponse> {
   }
 }
 
-function getMockScanResponse(ticker: string): ScanResponse {
+function getMockScanResponse(_ticker: string): ScanResponse {
   const mockResults: BWBStrategy[] = [
     {
       k1: 580,

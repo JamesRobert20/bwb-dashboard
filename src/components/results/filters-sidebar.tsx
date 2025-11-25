@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScanResponse, BWBStrategy } from "@/types/bwb";
 
-interface FiltersSidebarProps {
+type FiltersSidebarProps ={
   ticker: string | null;
   expiry?: string;
 }

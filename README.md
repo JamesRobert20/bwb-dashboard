@@ -13,8 +13,6 @@ A professional, real-time options trading dashboard for discovering and analyzin
 - 🎯 **Advanced Filtering** - Filter by DTE, credit, score, and more
 - 📱 **Fully Responsive** - Optimized for desktop, tablet, and mobile
 - 🌙 **Dark Mode** - Professional dark theme optimized for trading
-- ⚡ **Server-First Architecture** - Fast page loads with React Server Components
-- 🔄 **Suspense Boundaries** - Smooth loading states at component level
 - 🎨 **Modern UI** - Beautiful, intuitive interface with Tailwind CSS
 - 📈 **Summary Statistics** - Key metrics at a glance
 - 🔍 **Sortable Tables** - Sort strategies by any metric
@@ -22,14 +20,8 @@ A professional, real-time options trading dashboard for discovering and analyzin
 
 ## 🏗️ Architecture
 
-### Server-First Design
-- Pages are React Server Components by default
-- Client components only where interactivity is needed
-- Suspense boundaries prevent blocking entire pages
-- React Server Actions for mutations
-
 ### Tech Stack
-- **Framework**: Next.js 15 (App Router)
+- **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript 5
 - **Styling**: Tailwind CSS 4
 - **State Management**: TanStack Query v5 + React Context
@@ -43,7 +35,7 @@ A professional, real-time options trading dashboard for discovering and analyzin
 ### Prerequisites
 - Node.js 20+
 - Yarn (recommended) or npm
-- Python 3.9+ (for backend)
+- Docker (optional for full stack)
 
 ### One-Command Setup
 
@@ -53,7 +45,7 @@ git clone <repository-url>
 cd bwb-dashboard
 
 # Install dependencies
-yarn install
+yarn
 
 # Copy environment variables
 cp .env.local.example .env.local

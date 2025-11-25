@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScanSummary } from "@/types/bwb";
 import { formatCurrency, formatNumber } from "@/lib/utils";
 
-interface SummaryCardsProps {
+type SummaryCardsProps ={
   summary: ScanSummary;
 }
 

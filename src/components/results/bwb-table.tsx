@@ -8,14 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import { PayoffChart } from "./payoff-chart";
 
-interface BWBTableProps {
+type BWBTableProps = {
   strategies: BWBStrategy[];
 }
 
 type SortField = "score" | "credit" | "max_profit" | "max_loss" | "dte";
 type SortDirection = "asc" | "desc";
 
-interface SortButtonProps {
+type SortButtonProps ={
   field: SortField;
   children: React.ReactNode;
   onClick: (field: SortField) => void;

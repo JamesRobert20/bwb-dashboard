@@ -1,4 +1,4 @@
-export interface BWBStrategy {
+export type BWBStrategy = {
   k1: number;
   k2: number;
   k3: number;
@@ -11,7 +11,7 @@ export interface BWBStrategy {
   dte: number;
 }
 
-export interface ScanSummary {
+export type ScanSummary = {
   total_found: number;
   avg_score: number;
   best_score: number;
@@ -20,18 +20,18 @@ export interface ScanSummary {
   scan_time_ms: number;
 }
 
-export interface ScanResponse {
+export type ScanResponse = {
   results: BWBStrategy[];
   summary: ScanSummary;
   _originalResults?: BWBStrategy[];
 }
 
-export interface ScanRequest {
+export type ScanRequest = {
   ticker: string;
   expiry?: string;
 }
 
-export interface FilterState {
+export type FilterState = {
   minDTE: number;
   maxDTE: number;
   minCredit: number;

@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  LineChart,
   Line,
   XAxis,
   YAxis,
@@ -16,7 +15,7 @@ import {
 import { BWBStrategy } from "@/types/bwb";
 import { formatCurrency } from "@/lib/utils";
 
-interface PayoffChartProps {
+type PayoffChartProps = {
   strategy: BWBStrategy;
 }
 
