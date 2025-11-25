@@ -42,21 +42,18 @@ export function PayoffChart({ strategy }: PayoffChartProps) {
   };
 
   const calculatePayoff = (price: number): number => {
-    let payoff = credit * 100; // Initial credit received
+    let payoff = credit * 100;
 
-    // Long call at k1
     if (price > k1) {
-      payoff += wing_left * (price - k1) * 100;
+      payoff += (price - k1) * 100;
     }
 
-    // Short calls at k2
     if (price > k2) {
-      payoff -= (wing_left + wing_right) * (price - k2) * 100;
+      payoff -= 2 * (price - k2) * 100;
     }
 
-    // Long call at k3
     if (price > k3) {
-      payoff += wing_right * (price - k3) * 100;
+      payoff += (price - k3) * 100;
     }
 
     return payoff;
